@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo Installing ICS Download with Systemd
+
+if [ "$1" == "" ]; then
+  echo Warning: you did not specify the ICS Url. You can add it later using systemctl --user edit khal-ics-download.service command.
+fi
+
+echo Append script to Users bin
+ln -f ../src/scripts/khal-ics-download.sh ~/.local/bin
+
+echo Append systemd service and timer
+if [ ! -d ~/.config/systemd ]; then mkdir ~./config/systemd; fi
+if [ ! -d ~/.config/systemd/user ]; then mkdir ~./config/systemd/user; fi
+
+cp ../src/systemd-services/* ~/.config/systemd/user
+
+echo Creating Override File
+mkdir ~/.config/systemd/user/khal-ics-download.service.d
+echo "[Service]\nEnvironment=\"ICS_PATH=${1:-<AddYourICSURL>}\"" > ~/.config/systemd/user/khal-ics-download.service.d/override.conf
+
+echo Import services on systemd
+systemctl --user daemon-reload
+
+systemctl --user restart khal-ics-download.service
+systemctl --user restart khal-ics-download-timer.timer
+
+systemctl --user start khal-ics-download-timer.timer
+
+echo Done!
+

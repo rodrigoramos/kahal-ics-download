@@ -1,0 +1,12 @@
+
+[Unit]
+Description=Execs the Khal ICS Downloader
+Requires=khal-ics-download.service
+
+[Timer]
+Unit=khal-ics-download.service
+OnCalendar=*:0/15
+OnBootSec=0min
+
+[Install]
+WantedBy=timers.target

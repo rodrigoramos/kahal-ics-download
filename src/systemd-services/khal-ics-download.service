@@ -1,0 +1,10 @@
+[Unit]
+Description=Downlods an ICS file and import it on khal calendar app
+Wants=khal-ics-download-timer.timer
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/khal-ics-download.sh
+
+[Install]
+WantedBy=multi-user.target
