@@ -10,6 +10,9 @@ ICS_TEMP_FILE=/tmp/l3-calendar.ics
 echo Downloading ICS file...
 wget $ICS_PATH  -O $ICS_TEMP_FILE 
 
+echo Cleaning Previous Events
+rm ~/.local/share/khal/calendars/private/*
+
 echo Importing on Khal...
 khal import --batch $ICS_TEMP_FILE
 
